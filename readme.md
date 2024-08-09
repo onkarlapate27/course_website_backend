@@ -49,9 +49,21 @@ This project provides a FastAPI-based backend service to manage courses and thei
     ```bash
     docker build -t course-api .
 
-2. **Run the Application with Docker Compose:**:
+2. **Pull docker mongo to setup mongo-server:**:
     ```bash
-    docker-compose up
+    docker pull mongo
 
-2. **Access the API**:
-    The API will be available at http://localhost:8000/courses.
+3. **Run mongo-server:**:
+    ```bash
+    docker run --name [name] -d mongo:latest
+
+4. **Get the port on which mongo-server build is running**:
+    ```bash
+    docker inspect [mongo_container_id]
+
+5. **Run following command to run the app (substitute MONGO_HOST_NAME=mongo_port_number):**:
+    ```bash
+    docker run --name course_backend -p 8000:80 -e MONGO_HOST_NAME=172.17.0.2 -e MONGO_PORT=27017 -e DB_NAME=course_database course-api
+
+6. **Access the API**:
+    The API will be available at http://localhost:8000.
